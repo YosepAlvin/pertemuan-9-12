@@ -1,0 +1,38 @@
+import pandas as pd
+import numpy as np
+import statsmodels.api as sm
+
+# Data kasus
+data = {
+    'Promosi': [10, 2, 4, 6, 8, 7, 4, 6, 7, 6],
+    'Harga': [7, 3, 2, 4, 6, 5, 3, 3, 4, 3],
+    'Keputusan_Konsumen': [23, 7, 15, 17, 23, 22, 10, 14, 20, 19]
+}
+
+# Membuat DataFrame
+df = pd.DataFrame(data)
+
+# Menambahkan konstanta (intercept) untuk model regresi
+X = df[['Promosi', 'Harga']]
+X = sm.add_constant(X)
+y = df['Keputusan_Konsumen']
+
+# Membuat model regresi
+model = sm.OLS(y, X).fit()
+
+# Menampilkan hasil regresi
+print(model.summary())
+
+# Menghitung koefisien determinasi (R^2)
+R_squared = model.rsquared
+print(f'Koefisien Determinasi (R^2): {R_squared}')
+
+# Menghitung F-statistik
+F_stat = model.fvalue
+p_value = model.f_pvalue
+print(f'F-statistik: {F_stat}')
+print(f'p-value: {p_value}')
+
+# Menampilkan koefisien regresi
+coefficients = model.params
+print(f'Koefisien regresi:\n{coefficients}')
